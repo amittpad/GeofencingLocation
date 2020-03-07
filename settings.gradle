@@ -1,0 +1,2 @@
+rootProject.name='GeofencingLocation'
+include ':app'
