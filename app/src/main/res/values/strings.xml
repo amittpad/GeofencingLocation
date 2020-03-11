@@ -2,4 +2,8 @@
     <string name="app_name">GeofencingLocation</string>
     <string name="title_activity_maps">Map</string>
     <string name="base_url">http://142.93.206.95:3000/</string>
+    <string name="text_location_permission">You need to allow access the locaation permission.</string>
+    <string name="title_location_permission">Location Permission</string>
+    <string name="ok">OK</string>
+    <string name="get_distance">Get Shortest Distance</string>
 </resources>

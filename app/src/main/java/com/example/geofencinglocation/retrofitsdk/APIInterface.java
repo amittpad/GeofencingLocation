@@ -2,25 +2,23 @@ package com.example.geofencinglocation.retrofitsdk;
 
 
 import com.example.geofencinglocation.retrofitsdk.response.LocationListResponse;
+import com.example.geofencinglocation.retrofitsdk.response.ShortestDistanceResponse;
 
 import retrofit2.Call;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 
 public interface APIInterface {
     @GET("geofence")
     Call<LocationListResponse> getGeoFencingResponse();
 
-//    @FormUrlEncoded
-//    @POST("registration")
-//    Call<RegistrationResponse> getRegistrationResponse(
-//            @Field("first_name") String firstName,
-//            @Field("last_name") String lastName,
-//            @Field("email") String email,
-//            @Field("password") String password,
-//            @Field("phone") String phone,
-//            @Field("state") String state,
-//            @Field("city") String city,
-//            @Field("address1") String address1);
+    @FormUrlEncoded
+    @POST("geofence")
+    Call<ShortestDistanceResponse> getShortestDistanceResponse(
+            @Field("distance") double distance,
+            @Field("userId") String userId);
 
 }
 

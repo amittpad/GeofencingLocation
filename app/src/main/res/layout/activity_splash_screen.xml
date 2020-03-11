@@ -4,15 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     tools:context=".activity.SplashScreenActivity">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:text="Splash Screen"
-        android:textAllCaps="true"
-        android:textSize="16sp"/>
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/location_marker"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        app:lottie_autoPlay="true"
+        android:layout_gravity="center_vertical"
+        app:lottie_fileName="mapmaker.json" />
+
 
 </LinearLayout>
