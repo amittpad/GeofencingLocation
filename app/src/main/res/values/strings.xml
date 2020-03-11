@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">GeofencingLocation</string>
     <string name="title_activity_maps">Map</string>
-    <string name="base_url">www.google.com</string>
+    <string name="base_url">http://142.93.206.95:3000/</string>
 </resources>

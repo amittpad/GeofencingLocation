@@ -1,12 +1,14 @@
 package com.example.geofencinglocation.retrofitsdk;
 
 
+import com.example.geofencinglocation.retrofitsdk.response.LocationListResponse;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
 
 public interface APIInterface {
-//    @GET("12bzic")
-//    Call<BannerResponse> getBannerResponse();
+    @GET("geofence")
+    Call<LocationListResponse> getGeoFencingResponse();
 
 //    @FormUrlEncoded
 //    @POST("registration")
