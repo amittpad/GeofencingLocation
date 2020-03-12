@@ -1,6 +1,4 @@
 package com.example.geofencinglocation.retrofitsdk;
-
-
 import com.example.geofencinglocation.retrofitsdk.response.LocationListResponse;
 import com.example.geofencinglocation.retrofitsdk.response.ShortestDistanceResponse;
 

@@ -7,18 +7,18 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -44,9 +44,19 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
@@ -54,7 +64,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
-import static android.Manifest.permission.RECORD_AUDIO;
 
 public class MapsActivity extends AbstractProjectBaseActivity implements OnMapReadyCallback,
         GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener, GoogleApiClient.ConnectionCallbacks,
@@ -106,17 +115,6 @@ public class MapsActivity extends AbstractProjectBaseActivity implements OnMapRe
                         for (int i = 0; i < dataList.size(); i++) {
                             markerLocation(Double.parseDouble(dataList.get(i).getLatitude()), Double.parseDouble(dataList.get(i).getLongitude()), dataList.get(i));
                         }
-
-                        /**calculate shortest distance between the three points */
-                        distanceBetweenPointA_To_PointB(Double.parseDouble(dataList.get(0).getLatitude()), Double.parseDouble(dataList.get(0).getLongitude()), Double.parseDouble(dataList.get(1).getLatitude()), Double.parseDouble(dataList.get(1).getLongitude()));
-                        distanceBetweenPointA_To_PointC(Double.parseDouble(dataList.get(0).getLatitude()), Double.parseDouble(dataList.get(0).getLongitude()), Double.parseDouble(dataList.get(2).getLatitude()), Double.parseDouble(dataList.get(2).getLongitude()));
-                        distanceBetweenPointB_To_PointC(Double.parseDouble(dataList.get(1).getLatitude()), Double.parseDouble(dataList.get(1).getLongitude()), Double.parseDouble(dataList.get(2).getLatitude()), Double.parseDouble(dataList.get(2).getLongitude()));
-
-                        /** find a shortest distance among three distance */
-                        temp = distAB < distBC ? distAB : distBC;
-                        shortestDistance = distAC < temp ? distAC : temp;
-                        System.out.println("ShortestDistance is:" + shortestDistance);
-
                     } else {
                         Toast.makeText(MapsActivity.this, response.body().getResponse(), Toast.LENGTH_SHORT).show();
                     }
@@ -280,6 +278,21 @@ public class MapsActivity extends AbstractProjectBaseActivity implements OnMapRe
     }
 
     public void onClickGetDistance(View view) {
+        /**calculate shortest distance between the three points */
+        distanceBetweenPointA_To_PointB(Double.parseDouble(dataList.get(0).getLatitude()), Double.parseDouble(dataList.get(0).getLongitude()), Double.parseDouble(dataList.get(1).getLatitude()), Double.parseDouble(dataList.get(1).getLongitude()));
+        distanceBetweenPointA_To_PointC(Double.parseDouble(dataList.get(0).getLatitude()), Double.parseDouble(dataList.get(0).getLongitude()), Double.parseDouble(dataList.get(2).getLatitude()), Double.parseDouble(dataList.get(2).getLongitude()));
+        distanceBetweenPointB_To_PointC(Double.parseDouble(dataList.get(1).getLatitude()), Double.parseDouble(dataList.get(1).getLongitude()), Double.parseDouble(dataList.get(2).getLatitude()), Double.parseDouble(dataList.get(2).getLongitude()));
+
+        /** find a shortest distance among three distance */
+        temp = distAB < distBC ? distAB : distBC;
+        shortestDistance = distAC < temp ? distAC : temp;
+        System.out.println("ShortestDistance is:" + shortestDistance);
+
+        /** send the shortest distance to server */
+        sendShortestDistanceToServer();
+    }
+
+    private void sendShortestDistanceToServer() {
         ProgressDialog.getInstance().show(MapsActivity.this);
         APIInterface service = new APIClient.Builder().build(MapsActivity.this).getAPIInterface();
         service.getShortestDistanceResponse(shortestDistance, "2").enqueue(new Callback<ShortestDistanceResponse>() {
