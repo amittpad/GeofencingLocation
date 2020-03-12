@@ -289,7 +289,7 @@ public class MapsActivity extends AbstractProjectBaseActivity implements OnMapRe
                 if (response.isSuccessful()) {
                     if (response.body() != null && response.body().getStatus() == 200) {
                         ProgressDialog.getInstance().dismiss();
-                        Toast.makeText(MapsActivity.this, response.body().getMsg(), Toast.LENGTH_LONG).show();
+                        showAlertDialog(response.body().getMsg());
                     } else {
                         Toast.makeText(MapsActivity.this, response.body().getResponse(), Toast.LENGTH_SHORT).show();
                     }
@@ -301,6 +301,33 @@ public class MapsActivity extends AbstractProjectBaseActivity implements OnMapRe
                 Toast.makeText(MapsActivity.this, "Couldn't connect internet connection!", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void showAlertDialog(String msg) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MapsActivity.this);
+        builder.setTitle(getString(R.string.label_shortest_distance));
+        builder.setMessage(msg + "\n" + "Your shortest distance location A To B : " + shortestDistance + " " + "Km");
+
+        String positiveText = getString(android.R.string.ok);
+        builder.setPositiveButton(positiveText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        String negativeText = getString(android.R.string.cancel);
+        builder.setNegativeButton(negativeText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private boolean checkPermission() {

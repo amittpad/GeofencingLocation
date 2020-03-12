@@ -6,4 +6,5 @@
     <string name="title_location_permission">Location Permission</string>
     <string name="ok">OK</string>
     <string name="get_distance">Get Shortest Distance</string>
+    <string name="label_shortest_distance">Shortest Distance</string>
 </resources>
